@@ -5,7 +5,19 @@
 #   offset 8  : value
 #   offset 16 : next
 sum:
-    retq
+    xorl   %eax, %eax              # total = 0 
+
+.loop:
+    testq  %rdi, %rdi              # is ptr == NULL?
+    je     .done                   # yes: end of list
+
+    addq   8(%rdi), %rax           # total += ptr->value
+    movq   16(%rdi), %rdi          # ptr = ptr->next
+    jmp    .loop
+
+.done:
+    ret                            # total is already in %rax
+
 
 
 # sum of the elements of a linkedlist in C
